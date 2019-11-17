@@ -10,18 +10,18 @@ let passwd = null;
 
 function uploadFile(filepath: string) {
     filepath = path.resolve(filepath);
-    return new Promise((res, rej) => {
-        fs.readFile(filepath, async (err, data) => {
+    return new Promise(function (res, rej) {
+        fs.readFile(filepath, async function (err, data: Buffer) {
             const senddata = JSON.stringify({
                 filename: path.basename(filepath),
                 passwd: passwd,
-                data: Buffer.from(data).toString('base64')
+                data: Buffer.from(data).toString('base64'),
             });
             request.post(`https://${host}/api/v1/upload/file`, {
                 body: senddata,
                 headers: {
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                },
             }, (err, response) => {
                 if (response.statusCode === 200) {
                     console.log('Uploaded:', filepath);
@@ -40,11 +40,11 @@ function compile(options = { type: 'markdown', template: 'report' }) {
             body: JSON.stringify({
                 passwd: passwd,
                 type: options.type,
-                template: options.template
+                template: options.template,
             }),
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         }, (err, response) => {
             if (response.statusCode === 200) {
                 console.log('Compile started');
