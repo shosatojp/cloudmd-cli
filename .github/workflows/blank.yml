@@ -1,0 +1,17 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build TypeScript
+      run: |
+        npm ci
+        npm run build
+    - name: Publish
+      run: make
