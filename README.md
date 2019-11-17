@@ -1,5 +1,7 @@
 # CLI tool for [CloudMarkdown](https://cloudmd.monoid.app/)
 
+![](https://github.com/shosatojp/cloudmd-cli/workflows/CI/badge.svg)
+
 ## インストール
 1. [リリースページ](https://github.com/shosatojp/cloudmd-cli/releases)からファイルをダウンロードします
 2. tarまたはzipを解凍します
