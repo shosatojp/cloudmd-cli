@@ -86,20 +86,29 @@ function findFiles(patterns: string[]) {
 }
 
 
-async function onOpen(files: string[]) {
+async function onOpen(files: string[], query: object) {
     this.send(JSON.stringify({ passwd }));
     await Promise.all(files.map(f => uploadFile(f)));
-    await compile();
+    await compile({
+        template: query['template'],
+        type: query['type'] || 'markdown'
+    });
 }
 
 async function onMessage(e: string, query: object) {
     const data = JSON.parse(e);
     let buffer = '';
     if (data.type == 'logend') {
-        if (query['tex'] !== undefined)
-            await downloadFile(`https://${host}/data/${passwd}/main.tex`, query['tex']);
-        await downloadFile(`https://${host}/data/${passwd}/main.pdf`, query['pdf']);
-        console.log('Compilation Completed!');
+        console.log(buffer);
+        console.log('-'.repeat(50));
+        if (!data.body) {
+            if (query['tex'] !== undefined)
+                await downloadFile(`https://${host}/data/${passwd}/main.tex`, query['tex']);
+            await downloadFile(`https://${host}/data/${passwd}/main.pdf`, query['pdf']);
+            console.log('Compilation Completed!');
+        } else {
+            console.log('Failed to compile.');
+        }
         this.close();
     } else {
         for (const c of data.body) {
@@ -117,6 +126,10 @@ async function onMessage(e: string, query: object) {
 }
 
 (function main() {
+    console.log('╔═╗┬  ┌─┐┬ ┬┌┬┐╔╦╗┌─┐┬─┐┬┌─┌┬┐┌─┐┬ ┬┌┐┌  ╔═╗╦  ╦');
+    console.log('║  │  │ ││ │ ││║║║├─┤├┬┘├┴┐ │││ │││││││  ║  ║  ║');
+    console.log('╚═╝┴─┘└─┘└─┘─┴┘╩ ╩┴ ┴┴└─┴ ┴─┴┘└─┘└┴┘┘└┘  ╚═╝╩═╝╩');
+    console.log();
     const args = parse_args(process.argv.slice(2));
     const files = findFiles(args.positional);
 
@@ -135,7 +148,7 @@ async function onMessage(e: string, query: object) {
                 console.log('Passwd:', passwd);
 
                 const ws = new WebSocket(`wss://${host}`);
-                ws.on('open', () => onOpen.bind(ws)(files));
+                ws.on('open', () => onOpen.bind(ws)(files, args.query));
                 ws.on('message', e => onMessage.bind(ws)(e, args.query));
             });
         } else {
