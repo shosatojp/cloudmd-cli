@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build TypeScript
       run: |
-        npm ci
+        npm i
         npm run build
     - name: Publish
       run: make
