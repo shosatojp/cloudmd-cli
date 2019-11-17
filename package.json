@@ -6,7 +6,7 @@
     "scripts": {
         "test": "ts-node src/app.ts",
         "build": "tsc -p .",
-        "publish": "make"
+        "publish": "npm run build && make"
     },
     "repository": {
         "type": "git",
