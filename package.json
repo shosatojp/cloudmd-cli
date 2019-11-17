@@ -1,0 +1,36 @@
+{
+    "name": "cloudmd-cli",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "ts-node src/app.ts",
+        "build": "tsc -p .",
+        "publish": "make"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/shosatojp/cloudmd-cli.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/shosatojp/cloudmd-cli/issues"
+    },
+    "homepage": "https://github.com/shosatojp/cloudmd-cli#readme",
+    "dependencies": {
+        "@types/node": "^12.12.8",
+        "command-line-args": "^5.1.1",
+        "commander": "^4.0.1",
+        "glob": "^7.1.6",
+        "request": "^2.88.0",
+        "ws": "^7.2.0",
+        "yargs": "^14.2.0"
+    },
+    "devDependencies": {
+        "nexe": "^3.3.2",
+        "ts-node": "^8.5.2",
+        "tsc": "^1.20150623.0",
+        "typescript": "^3.7.2"
+    }
+}
