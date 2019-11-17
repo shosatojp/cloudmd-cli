@@ -9,9 +9,9 @@ define publish
 	$(nexe) $(app) -n $(project) -t $(1) -o bin/$(1)/$(project)
 
 	if [ "$(1)" = "linux-x64" ]; then\
-		tar cfz bin/cloudmd-$(1).tar.gz bin/$(1);\
+		tar cfz bin/cloudmd-$(1).tar bin/$(1);\
 	else\
-		zip bin/cloudmd-$(1) bin/$(1);\
+		zip -9 bin/cloudmd-$(1) bin/$(1)/*;\
 	fi
 
 	rm -rf bin/$(1)
