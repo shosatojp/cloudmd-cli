@@ -12,6 +12,10 @@ function uploadFile(filepath: string) {
     filepath = path.resolve(filepath);
     return new Promise(function (res, rej) {
         fs.readFile(filepath, async function (err, data: Buffer) {
+            if (!data) {
+                rej();
+                return;
+            }
             const senddata = JSON.stringify({
                 filename: path.basename(filepath),
                 passwd: passwd,
@@ -80,7 +84,7 @@ function parse_args(argv: string[]) {
 
 function findFiles(patterns: string[]) {
     return patterns.reduce((p, c) => {
-        p.push(...glob.sync(c));
+        p.push(...glob.sync(c, { nodir: true }));
         return p;
     }, []);
 }
@@ -88,7 +92,7 @@ function findFiles(patterns: string[]) {
 
 async function onOpen(files: string[], query: object) {
     this.send(JSON.stringify({ passwd }));
-    await Promise.all(files.map(f => uploadFile(f)));
+    await Promise.all(files.map(f => uploadFile(f).catch(reason => console.log('failed to upload ' + f))));
     await compile({
         template: query['template'],
         type: query['type'] || 'markdown'
