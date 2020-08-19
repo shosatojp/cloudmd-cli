@@ -106,13 +106,13 @@ async function onMessage(e: string, query: object) {
         console.log(buffer);
         console.log('-'.repeat(50));
         if (!data.body) {
-            if (query['tex'] !== undefined)
-                await downloadFile(`https://${host}/data/${passwd}/main.tex`, query['tex']);
             await downloadFile(`https://${host}/data/${passwd}/main.pdf`, query['pdf']);
             console.log('Compilation Completed!');
         } else {
             console.log('Failed to compile.');
         }
+        if (query['tex'] !== undefined)
+            await downloadFile(`https://${host}/data/${passwd}/main.tex`, query['tex']);
         this.close();
     } else {
         for (const c of data.body) {
@@ -150,6 +150,7 @@ async function onMessage(e: string, query: object) {
             res.on('data', chunk => {
                 passwd = JSON.parse(chunk).passwd;
                 console.log('Passwd:', passwd);
+                console.log('Your Tex file is available here:', `https://${host}/data/${passwd}/main.tex`);
 
                 const ws = new WebSocket(`wss://${host}`);
                 ws.on('open', () => onOpen.bind(ws)(files, args.query));
